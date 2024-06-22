@@ -14,20 +14,20 @@ function App(): JSX.Element {
   const buttonPress = (targetValue: any) => {
     if (!inputValue) {
       return Snackbar.show({
-        text: 'Please enter amount',
+        text: 'Please enter an amount',
         backgroundColor: '#EA7773',
         textColor: '#000000',
       })
     }
     const inputAmount = parseFloat(inputValue)
-    if (!isNaN(inputAmount)) {
+    if (!isNaN(inputAmount) && inputAmount > 0) {
       const convertedValue = inputAmount * targetValue.value
       const result = `${targetValue.symbol} ${convertedValue.toFixed(2)} 🤑`
       setResultValue(result)
       setTargetCurrency(targetValue.name)
     } else {
       return Snackbar.show({
-        text: 'Please enter valid amount',
+        text: 'Please enter a valid amount',
         backgroundColor: '#F4BE2C',
         textColor: '#000000',
       })
@@ -48,6 +48,7 @@ function App(): JSX.Element {
               onChangeText={setInputValue}
               keyboardType='numeric'
               placeholder='Enter Amount in Rupees'
+              placeholderTextColor='#7f8c8d'
               style={styles.inputAmountField}
             />
           </View>
@@ -68,7 +69,7 @@ function App(): JSX.Element {
                 ]}
                 onPress={() => buttonPress(item)}
               >
-                <CurrencyButton {...item}/>
+                <CurrencyButton name={item.name} flag={item.flag} />
               </Pressable>
             )}
           />
@@ -97,6 +98,7 @@ const styles = StyleSheet.create({
   rupeeContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+    marginBottom: 20,
   },
   rupee: {
     marginRight: 8,
@@ -111,11 +113,14 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 4,
     backgroundColor: '#ffffff',
+    fontSize: 18,
+    color: '#000000', // Ensure the text is visible
   },
   resultTxt: {
     fontSize: 32,
     color: '#000000',
     fontWeight: '800',
+    marginTop: 20,
   },
   bottomContainer: {
     flex: 3,
@@ -124,7 +129,7 @@ const styles = StyleSheet.create({
   button: {
     flex: 1,
     margin: 12,
-    height: 60,
+    height: 80,
     borderRadius: 12,
     backgroundColor: '#fff',
     elevation: 2,
