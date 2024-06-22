@@ -13,7 +13,7 @@ function App(): JSX.Element {
   const [targetCurrency, setTargetCurrency] = useState('')
 
   // Function to handle button press for currency conversion
-  const buttonPress = (targetValue: any) => {
+  const buttonPress = (targetValue: Currency) => {
     // Show a snackbar if the input value is empty
     if (!inputValue) {
       return Snackbar.show({
@@ -45,6 +45,9 @@ function App(): JSX.Element {
 
   return (
     <SafeAreaView style={styles.safeArea}>
+      <View>
+        <Text style={styles.title}>Currency Converter</Text>
+      </View>
       <StatusBar />
       <View style={styles.container}>
         {/* Top container for input field and result */}
@@ -99,6 +102,14 @@ const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
     backgroundColor: '#f2f7fc',
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginTop: 20,
+    marginBottom: 16,
+    color: '#000000',
   },
   container: {
     flex: 1,
