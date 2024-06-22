@@ -7,11 +7,14 @@ import { currencyByRupee } from './constants'
 import CurrencyButton from './components/CurrencyButton'
 
 function App(): JSX.Element {
+  // State variables to manage user input, conversion result, and selected currency
   const [inputValue, setInputValue] = useState('')
-  const [resultValue, setResultValue] = useState('')
+  const [resultValue, setResultValue] = useState('0 🤑')
   const [targetCurrency, setTargetCurrency] = useState('')
 
+  // Function to handle button press for currency conversion
   const buttonPress = (targetValue: any) => {
+    // Show a snackbar if the input value is empty
     if (!inputValue) {
       return Snackbar.show({
         text: 'Please enter an amount',
@@ -19,13 +22,19 @@ function App(): JSX.Element {
         textColor: '#000000',
       })
     }
+    // Parse the input value to a float
     const inputAmount = parseFloat(inputValue)
+    // Check if the input value is a valid number and greater than 0
     if (!isNaN(inputAmount) && inputAmount > 0) {
+      // Perform currency conversion
       const convertedValue = inputAmount * targetValue.value
+      // Format the result with the currency symbol
       const result = `${targetValue.symbol} ${convertedValue.toFixed(2)} 🤑`
+      // Update the state with the result and selected currency
       setResultValue(result)
       setTargetCurrency(targetValue.name)
     } else {
+      // Show a snackbar if the input value is invalid
       return Snackbar.show({
         text: 'Please enter a valid amount',
         backgroundColor: '#F4BE2C',
@@ -38,6 +47,7 @@ function App(): JSX.Element {
     <SafeAreaView style={styles.safeArea}>
       <StatusBar />
       <View style={styles.container}>
+        {/* Top container for input field and result */}
         <View style={styles.topContainer}>
           <View style={styles.rupeeContainer}>
             <Text style={styles.rupee}>₹</Text>
@@ -52,10 +62,12 @@ function App(): JSX.Element {
               style={styles.inputAmountField}
             />
           </View>
+          {/* Display the conversion result */}
           {resultValue && (
             <Text style={styles.resultTxt}>{resultValue}</Text>
           )}
         </View>
+        {/* Bottom container for currency buttons */}
         <View style={styles.bottomContainer}>
           <FlatList
             numColumns={3}
@@ -65,10 +77,12 @@ function App(): JSX.Element {
               <Pressable
                 style={[
                   styles.button,
+                  // Highlight the selected button
                   targetCurrency === item.name ? styles.selected : null
                 ]}
                 onPress={() => buttonPress(item)}
               >
+                {/* Custom component to display currency flag and name */}
                 <CurrencyButton name={item.name} flag={item.flag} />
               </Pressable>
             )}
